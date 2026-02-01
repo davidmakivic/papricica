@@ -1,6 +1,6 @@
 package com.restaurant.papricica.endpoints;
 
-import com.restaurant.papricica.entity.Reservation;
+import com.restaurant.papricica.dtos.ReservationDto;
 import com.restaurant.papricica.service.ReservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +24,10 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Reservation>> getAllReservations() {
+    public ResponseEntity<List<ReservationDto>> getAllReservations() {
          LOGGER.info("getAllReservations");
          LOGGER.debug("getAllReservations");
-            List<Reservation> reservations = reservationService.getAllReservations();
+            List<ReservationDto> reservations = reservationService.getAllReservations();
+            return reservations != null ? ResponseEntity.ok(reservations) : ResponseEntity.notFound().build();
     }
 }

@@ -24,7 +24,7 @@ public class Table {
 
     public Table() { /* Default constructor */ }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservations", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "table", cascade = CascadeType.ALL, orphanRemoval = true)
     @Getter
     @Setter
     private Set<Reservation> reservations = new HashSet<>();

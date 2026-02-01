@@ -22,6 +22,8 @@ public class SecurityConfig {
                         // Your public API endpoints (MVP)
                         .requestMatchers(HttpMethod.GET, "/api/v1/health").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/v1/reservations").permitAll()
+
                         // Swagger/OpenAPI (if you add springdoc)
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 

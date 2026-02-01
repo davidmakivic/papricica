@@ -1,6 +1,8 @@
 package com.restaurant.papricica.service;
 
-import com.restaurant.papricica.entity.Reservation;
+import com.restaurant.papricica.dtos.ReservationDto;
+import com.restaurant.papricica.mapper.ReservationMapper;
+import com.restaurant.papricica.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,8 +10,15 @@ import java.util.List;
 @Service
 public class ReservationService {
 
-    List<Reservation> getAllReservations() {
+    private ReservationRepository reservationRepository;
+    private ReservationMapper reservationMapper;
 
-        return List.of();
+    public ReservationService(ReservationRepository reservationRepository, ReservationMapper reservationMapper) {
+        this.reservationRepository = reservationRepository;
+        this.reservationMapper = reservationMapper;
+    }
+
+    public List<ReservationDto> getAllReservations() {
+        return reservationMapper.reservationsListToReservationDtosList(reservationRepository.findAll());
     }
 }
