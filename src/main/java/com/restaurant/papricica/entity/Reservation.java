@@ -52,9 +52,13 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    public Reservation() { /* Default constructor */ }
-
+    @Getter
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "table_id", nullable = false)
     private com.restaurant.papricica.entity.Table table;
+
+    public Reservation() { /* Default constructor */ }
+
+
 }
