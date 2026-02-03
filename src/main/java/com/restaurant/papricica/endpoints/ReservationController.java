@@ -2,6 +2,7 @@ package com.restaurant.papricica.endpoints;
 
 import com.restaurant.papricica.dtos.ReservationDto;
 import com.restaurant.papricica.service.ReservationService;
+import jakarta.annotation.security.PermitAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    @PermitAll
     @GetMapping
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
          LOGGER.info("getAllReservations");
