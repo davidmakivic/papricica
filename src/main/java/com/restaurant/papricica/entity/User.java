@@ -4,6 +4,8 @@ import com.restaurant.papricica.util.Roles;
 import com.restaurant.papricica.util.UserStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -24,7 +27,6 @@ public class User {
     @Getter
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long userId;
 
     @Getter
@@ -59,12 +61,14 @@ public class User {
 
     @Getter
     @Setter
-    @Column(name = "role", nullable = false)
+    @Column(name = "user_role", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Roles role;
 
     @Getter
     @Setter
-    @Column(name = "status", nullable = false)
+    @Column(name = "user_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     @Getter
@@ -100,9 +104,10 @@ public class User {
         private String firstName;
         private String lastName;
         private Roles role;
-        private String phoneNumber;
         private UserStatus status;
         private Integer failedLoginAttempts;
+        private String phoneNumber;
+        private LocalDateTime createdAt;
 
         private UserBuilder() {
         }
@@ -157,6 +162,11 @@ public class User {
             return this;
         }
 
+        public User.UserBuilder withCreatedAt() {
+            this.createdAt = LocalDateTime.now();
+            return this;
+        }
+
         public User build() {
             User User = new User();
             User.setUserId(userId);
@@ -166,7 +176,11 @@ public class User {
             User.setLastName(lastName);
             User.setRole(role);
             User.setStatus(status);
+            User.setPhoneNumber(phoneNumber);
             User.setFailedLoginAttempts(failedLoginAttempts);
+            if (createdAt != null) {
+                User.setCreatedAt(java.sql.Timestamp.valueOf(createdAt));
+            }
             return User;
         }
     }

@@ -44,6 +44,7 @@ public class UserService {
                 .withRole(dto.role())
                 .withFailedLoginAttempts(0)
                 .withUserStatus(UserStatus.UNVERIFIED)
+                .withCreatedAt()
                 .build();
 
         return userMapper.userToUserDetailDto(userRepository.save(newUser));

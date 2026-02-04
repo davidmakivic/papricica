@@ -11,3 +11,16 @@ create table if not exists reservations (
     status varchar(30) not null,
     created_at timestamptz not null default now()
     );
+
+create table if not exists users (
+    user_id bigserial primary key,
+    email varchar(50) not null unique,
+    first_name varchar(50) not null,
+    last_name varchar(50) not null,
+    password_hash varchar(255) not null,
+    phone_number varchar(50) not null unique,
+    user_role varchar(30) not null,
+    user_status varchar(30) not null,
+    failed_login_attempts int not null default 0,
+    created_at timestamptz default now()
+);
