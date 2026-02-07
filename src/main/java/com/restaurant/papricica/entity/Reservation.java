@@ -15,6 +15,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -58,7 +60,12 @@ public class Reservation {
     @JoinColumn(name = "table_id", nullable = false)
     private com.restaurant.papricica.entity.Table table;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Getter
+    @Setter
+    private User user;
+
     public Reservation() { /* Default constructor */ }
-
-
 }

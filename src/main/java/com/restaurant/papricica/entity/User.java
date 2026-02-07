@@ -2,13 +2,16 @@ package com.restaurant.papricica.entity;
 
 import com.restaurant.papricica.util.Roles;
 import com.restaurant.papricica.util.UserStatus;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -18,6 +21,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -80,6 +84,11 @@ public class User {
     @Setter
     @Column(name = "failed_login_attempts", nullable = false)
     private Integer failedLoginAttempts;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Getter
+    @Setter
+    private Set<Reservation> reservations;
 
     public User() {
     }

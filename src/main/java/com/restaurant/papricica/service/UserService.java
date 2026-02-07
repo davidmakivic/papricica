@@ -1,5 +1,6 @@
 package com.restaurant.papricica.service;
 
+import com.restaurant.papricica.dtos.ReservationDto;
 import com.restaurant.papricica.dtos.UserCreateDto;
 import com.restaurant.papricica.dtos.UserDetailDto;
 import com.restaurant.papricica.entity.User;
@@ -7,6 +8,7 @@ import com.restaurant.papricica.mapper.UserMapper;
 import com.restaurant.papricica.repository.UserRepository;
 import com.restaurant.papricica.security.JwtTokenizer;
 import com.restaurant.papricica.util.UserStatus;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -48,6 +51,18 @@ public class UserService {
                 .build();
 
         return userMapper.userToUserDetailDto(userRepository.save(newUser));
+    }
+
+    @Transactional
+    public void delete(String email) {
+
+        List<ReservationDto> reservations = reservationService.getAllForUser(email);
+
+        for(ReservationDto reservation : reservations) {
+            reservationService.deleteForUser(reservation.id(),  email);
+        }
+
+        userRepository.deleteUserByEmail(email);
     }
 
 }
