@@ -18,6 +18,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Entity
@@ -36,17 +37,17 @@ public class Reservation {
     @NotNull
     @Getter
     @Setter
-    private Date startDate;
+    private OffsetDateTime startDate;
 
     @NotNull
     @Getter
     @Setter
-    private Date endDate;
+    private OffsetDateTime endDate;
 
     @NotNull
     @Getter
     @Setter
-    private Date createdAt;
+    private OffsetDateTime createdAt;
 
     @NotNull
     @Getter

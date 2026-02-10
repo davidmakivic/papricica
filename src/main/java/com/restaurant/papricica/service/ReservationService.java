@@ -6,7 +6,6 @@ import com.restaurant.papricica.entity.User;
 import com.restaurant.papricica.mapper.ReservationMapper;
 import com.restaurant.papricica.repository.ReservationRepository;
 import com.restaurant.papricica.repository.UserRepository;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

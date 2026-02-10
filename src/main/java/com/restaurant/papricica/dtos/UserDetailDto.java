@@ -3,7 +3,7 @@ package com.restaurant.papricica.dtos;
 import com.restaurant.papricica.util.Roles;
 import com.restaurant.papricica.util.UserStatus;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 public record UserDetailDto(
         Long userId,
@@ -13,6 +13,6 @@ public record UserDetailDto(
         String phoneNumber,
         Roles role,
         UserStatus status,
-        Date createdAt
+        OffsetDateTime createdAt
 ) {
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -20,6 +21,7 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -77,8 +79,8 @@ public class User {
 
     @Getter
     @Setter
-    @Column(name = "created_at", nullable = false)
-    private Date createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private OffsetDateTime createdAt;
 
     @Getter
     @Setter
@@ -90,17 +92,23 @@ public class User {
     @Setter
     private Set<Reservation> reservations;
 
+    @PrePersist
+    void onCreate() {
+        if (createdAt == null) {
+            createdAt = OffsetDateTime.now();
+        }
+    }
+
     public User() {
     }
 
-    public User(Long userId, String phoneNumber, String email, String passwordHash, String firstName, String lastName, Timestamp createdAt, UserStatus status, Integer failedLoginAttempts
+    public User(Long userId, String phoneNumber, String email, String passwordHash, String firstName, String lastName, UserStatus status, Integer failedLoginAttempts
     ) {
         this.userId = userId;
         this.email = email;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.createdAt = createdAt;
         this.status = status;
         this.failedLoginAttempts = failedLoginAttempts;
         this.phoneNumber = phoneNumber;
@@ -116,7 +124,7 @@ public class User {
         private UserStatus status;
         private Integer failedLoginAttempts;
         private String phoneNumber;
-        private LocalDateTime createdAt;
+        private OffsetDateTime createdAt;
 
         private UserBuilder() {
         }
@@ -171,8 +179,8 @@ public class User {
             return this;
         }
 
-        public User.UserBuilder withCreatedAt() {
-            this.createdAt = LocalDateTime.now();
+        public User.UserBuilder withCreatedAtNow() {
+            this.createdAt = OffsetDateTime.now();
             return this;
         }
 
@@ -188,7 +196,7 @@ public class User {
             User.setPhoneNumber(phoneNumber);
             User.setFailedLoginAttempts(failedLoginAttempts);
             if (createdAt != null) {
-                User.setCreatedAt(java.sql.Timestamp.valueOf(createdAt));
+                User.setCreatedAt(createdAt);
             }
             return User;
         }

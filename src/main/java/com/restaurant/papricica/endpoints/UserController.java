@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PermitAll
-    @PostMapping
+    @PostMapping("/login")
     public String login(@RequestBody UserLoginDto userLoginDto) {
         LOGGER.info("Login attempt for user '{}'", userLoginDto.email());
         LOGGER.debug("Login DTO received");
