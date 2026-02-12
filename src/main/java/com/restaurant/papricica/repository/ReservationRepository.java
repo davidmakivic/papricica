@@ -28,4 +28,11 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             @Param("blocking") Set<ReservationStatus> blocking
     );
 
+    @Query("""
+    select distinct r from Reservation r
+        where r.table.id = :tableId
+        and r.startDate = :startDate
+    """)
+    Reservation findByTableIdAndStartDate(Long tableId, OffsetDateTime startDate);
+
 }

@@ -27,7 +27,7 @@ public class AvailabilityService {
 
         Set<ReservationStatus> blocking = Set.of(ReservationStatus.RESERVED);
 
-        Set<Long> blockedTableIds =reservationRepository.findBlockedTableIds(start, end, blocking);
+        Set<Long> blockedTableIds = reservationRepository.findBlockedTableIds(start, end, blocking);
 
         List<TableAvailabilityDto> tables = tableRepository.findAll().stream()
                 .map(t -> new TableAvailabilityDto(

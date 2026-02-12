@@ -1,5 +1,7 @@
 package com.restaurant.papricica.mapper;
 
+import com.restaurant.papricica.dtos.CreateReservationDto;
+import com.restaurant.papricica.dtos.ReservationDetailsDto;
 import com.restaurant.papricica.dtos.ReservationDto;
 import com.restaurant.papricica.entity.Reservation;
 import org.mapstruct.Mapper;
@@ -15,4 +17,8 @@ public interface ReservationMapper {
     Reservation reservationDtoToReservation(ReservationDto reservationDto);
 
     List<ReservationDto> reservationsListToReservationDtosList(List<Reservation> reservations);
+
+    Reservation createReservationDtoToReservation(CreateReservationDto reservationDto);
+
+    ReservationDetailsDto reservationToReservationDetailsDto(Reservation reservation);
 }

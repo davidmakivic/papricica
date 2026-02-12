@@ -1,5 +1,7 @@
 package com.restaurant.papricica.service;
 
+import com.restaurant.papricica.dtos.CreateReservationDto;
+import com.restaurant.papricica.dtos.ReservationDetailsDto;
 import com.restaurant.papricica.dtos.ReservationDto;
 import com.restaurant.papricica.entity.Reservation;
 import com.restaurant.papricica.entity.User;
@@ -49,6 +51,20 @@ public class ReservationService {
         if (r.getUser() == null || r.getUser().getEmail() == null || !r.getUser().getEmail().equals(email)) {
             throw new RuntimeException("Not allowed");
         }
+    }
+
+    public ReservationDetailsDto createReservation(CreateReservationDto createReservationDto) {
+        Reservation stored = reservationRepository.findByTableIdAndStartDate(createReservationDto.tableId(), createReservationDto.startDate());
+
+        if (stored != null) {
+            throw new RuntimeException("We are very sorry but, it seems that the table you are trying to reserve is already reserved for the selected time slot :(. Please choose a different time or table.");
+        }
+
+        Reservation reservation = reservationMapper.createReservationDtoToReservation(createReservationDto);
+
+        Reservation saved = reservationRepository.save(reservation);
+
+        return reservationMapper.reservationToReservationDetailsDto(saved);
     }
 }
 
