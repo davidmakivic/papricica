@@ -20,5 +20,6 @@ public interface ReservationMapper {
 
     Reservation createReservationDtoToReservation(CreateReservationDto reservationDto);
 
+    @Mapping(target = "tableId", source = "table.id")
     ReservationDetailsDto reservationToReservationDetailsDto(Reservation reservation);
 }

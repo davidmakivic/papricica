@@ -23,5 +23,5 @@ create table if not exists reservations (
     start_date timestamptz not null,
     end_date timestamptz not null,
     status varchar(30) not null,
-    created_at timestamptz not null default now()
+    created_at timestamptz default now()
     );

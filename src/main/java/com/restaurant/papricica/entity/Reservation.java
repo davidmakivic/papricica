@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -69,4 +70,14 @@ public class Reservation {
     private User user;
 
     public Reservation() { /* Default constructor */ }
+
+    @PrePersist
+    protected void onPrePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = OffsetDateTime.now();
+        }
+        if (this.endDate == null && this.startDate != null) {
+            this.endDate = this.startDate.plusHours(2);
+        }
+    }
 }

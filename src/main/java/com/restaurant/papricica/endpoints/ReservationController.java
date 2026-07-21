@@ -8,8 +8,10 @@ import jakarta.annotation.security.PermitAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,9 +38,9 @@ public class ReservationController {
             return reservations != null ? ResponseEntity.ok(reservations) : ResponseEntity.notFound().build();
     }
 
-    @PermitAll
+    @Secured("ROLE_USER")
     @PostMapping
-    public ResponseEntity<ReservationDetailsDto> createReservation(CreateReservationDto createReservationDto) {
+    public ResponseEntity<ReservationDetailsDto> createReservation(@RequestBody CreateReservationDto createReservationDto) {
         LOGGER.info("Creating a new reservation");
         ReservationDetailsDto reservationDetailsDto = reservationService.createReservation(createReservationDto);
         return reservationDetailsDto != null ? ResponseEntity.ok(reservationDetailsDto) : ResponseEntity.badRequest().build();
