@@ -5,6 +5,8 @@ import com.restaurant.papricica.dtos.UserCreateDto;
 import com.restaurant.papricica.dtos.UserDetailDto;
 import com.restaurant.papricica.dtos.UserLoginDto;
 import com.restaurant.papricica.entity.User;
+import com.restaurant.papricica.exceptions.EmailAlreadyExistsException;
+import com.restaurant.papricica.exceptions.PhoneNumberAlreadyExistsException;
 import com.restaurant.papricica.mapper.UserMapper;
 import com.restaurant.papricica.repository.UserRepository;
 import com.restaurant.papricica.security.JwtTokenizer;
@@ -86,6 +88,14 @@ public class UserService {
     }
 
     public UserDetailDto createUser(UserCreateDto dto) {
+
+        if(userRepository.findUserByEmail(dto.email()) != null) {
+            throw new EmailAlreadyExistsException();
+        }
+
+        if(userRepository.findUserByPhoneNumber(dto.phoneNumber()) != null){
+            throw new PhoneNumberAlreadyExistsException();
+        }
 
         User newUser = User.UserBuilder.aUser()
                 .withEmail(dto.email())
