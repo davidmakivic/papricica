@@ -92,6 +92,11 @@ public class User {
     @Setter
     private Set<Reservation> reservations;
 
+    @Getter
+    @Setter
+    @Column(name = "email_verified", nullable = false)
+    private boolean emailVerified = false;
+
     @PrePersist
     void onCreate() {
         if (createdAt == null) {

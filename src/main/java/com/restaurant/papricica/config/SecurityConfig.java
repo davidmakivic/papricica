@@ -1,6 +1,6 @@
 package com.restaurant.papricica.config;
 
-import com.restaurant.papricica.security.JwtAuthorizationFilter;
+import com.restaurant.papricica.security.user.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -6,6 +6,7 @@ import com.restaurant.papricica.dtos.UserDetailDto;
 import com.restaurant.papricica.dtos.UserLoginDto;
 import com.restaurant.papricica.service.UserService;
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class UserController {
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDetailDto createUser(@RequestBody UserCreateDto dto) {
+    public UserDetailDto createUser(@Valid @RequestBody UserCreateDto dto) {
         LOGGER.info("Creating a new user");
         return userService.createUser(dto);
     }

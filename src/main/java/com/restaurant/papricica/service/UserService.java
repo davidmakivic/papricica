@@ -9,14 +9,13 @@ import com.restaurant.papricica.exceptions.EmailAlreadyExistsException;
 import com.restaurant.papricica.exceptions.PhoneNumberAlreadyExistsException;
 import com.restaurant.papricica.mapper.UserMapper;
 import com.restaurant.papricica.repository.UserRepository;
-import com.restaurant.papricica.security.JwtTokenizer;
+import com.restaurant.papricica.security.user.JwtTokenizer;
 import com.restaurant.papricica.util.Roles;
 import com.restaurant.papricica.util.UserStatus;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -89,7 +88,9 @@ public class UserService {
 
     public UserDetailDto createUser(UserCreateDto dto) {
 
-        if(userRepository.findUserByEmail(dto.email()) != null) {
+        String normalizedEmail = dto.email().trim().toLowerCase();
+
+        if(userRepository.findUserByEmail(normalizedEmail) != null) {
             throw new EmailAlreadyExistsException();
         }
 
@@ -98,7 +99,7 @@ public class UserService {
         }
 
         User newUser = User.UserBuilder.aUser()
-                .withEmail(dto.email())
+                .withEmail(normalizedEmail)
                 .withPassword(passwordEncoder.encode(dto.password()))
                 .withFirstName(dto.firstName())
                 .withLastName(dto.lastName())

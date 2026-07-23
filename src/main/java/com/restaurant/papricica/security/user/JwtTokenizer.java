@@ -1,4 +1,4 @@
-package com.restaurant.papricica.security;
+package com.restaurant.papricica.security.user;
 
 import com.restaurant.papricica.config.properties.SecurityProperties;
 import io.jsonwebtoken.Jwts;
