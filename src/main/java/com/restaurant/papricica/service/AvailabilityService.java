@@ -6,6 +6,7 @@ import com.restaurant.papricica.repository.ReservationRepository;
 import com.restaurant.papricica.repository.TableRepository;
 import com.restaurant.papricica.util.ReservationStatus;
 import com.restaurant.papricica.util.TableStatus;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -22,6 +23,7 @@ public class AvailabilityService {
         this.reservationRepository = reservationRepository;
     }
 
+    @Transactional
     public AvailabilityResponse getAvailability(OffsetDateTime start) {
         OffsetDateTime end = start.plusHours(2);
 

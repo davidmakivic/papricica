@@ -1,4 +1,4 @@
-package com.restaurant.papricica.security.email;
+package com.restaurant.papricica.security;
 
 import org.springframework.stereotype.Component;
 

@@ -4,25 +4,32 @@ import com.restaurant.papricica.util.Roles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+@Builder
 public record UserCreateDto(
-        @NotBlank(message = "Email is required")
+        @NotBlank(message = "Please provide an email")
+        @NotNull(message = "Please provide an email")
         @Email(message = "Email format is invalid")
         String email,
 
-        @NotBlank
+        @NotBlank(message = "Please provide a password")
+        @NotNull(message = "Please provide a password")
         String password,
 
-        @NotBlank(message = "First name is required")
+        @NotBlank(message = "Please provide  your first name")
+        @NotNull(message = "Please provide  your first name")
         String firstName,
 
-        @NotBlank(message = "Last name is required")
+        @NotBlank(message = "Please provide your second name")
+        @NotNull(message = "Please provide your second name")
         String lastName,
 
-        @NotBlank(message = "Phone number is required")
+        @NotBlank(message = "Please provide a phone number")
+        @NotNull(message = "Please provide a phone number")
         String phoneNumber,
 
-        @NotNull(message = "Role is required")
+        @NotNull
         Roles role
 ) {
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ReservationMapper {
-    @Mapping(target = "tableId", source = "table.id")
+
     ReservationDto reservationToReservationDto(Reservation reservation);
 
     Reservation reservationDtoToReservation(ReservationDto reservationDto);

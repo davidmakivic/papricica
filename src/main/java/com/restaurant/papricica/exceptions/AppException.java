@@ -1,6 +1,7 @@
 package com.restaurant.papricica.exceptions;
 
 public abstract class AppException extends RuntimeException{
+
     private final ErrorCode errorCode;
 
     protected AppException(ErrorCode errorCode, String message) {

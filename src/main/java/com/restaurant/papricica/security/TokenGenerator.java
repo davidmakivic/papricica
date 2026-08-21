@@ -1,4 +1,4 @@
-package com.restaurant.papricica.security.email;
+package com.restaurant.papricica.security;
 
 import org.springframework.stereotype.Component;
 
@@ -6,8 +6,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 @Component
-public class VerificationTokenGenerator {
-
+public class TokenGenerator {
     private final SecureRandom secureRandom = new SecureRandom();
 
     public String generateToken() {
@@ -15,5 +14,4 @@ public class VerificationTokenGenerator {
         secureRandom.nextBytes(tokenBytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
     }
-
 }
