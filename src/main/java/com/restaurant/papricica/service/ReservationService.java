@@ -168,6 +168,6 @@ public class ReservationService {
     public void clearDbFromOldReservations(){
         OffsetDateTime now = OffsetDateTime.now();
 
-        reservationRepository.deleteAllBefore(now);
+        reservationRepository.deleteByEndDateBefore(now);
     }
 }

@@ -46,7 +46,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
 
     List<Reservation> findAllByStatusAndEndDateBefore(ReservationStatus status, OffsetDateTime endDateBefore);
 
-    void deleteAllBefore(OffsetDateTime now);
+    void deleteByEndDateBefore(OffsetDateTime endDate);
 
     Reservation findByTableIdAndStartDateAndStatus(Long tableId, OffsetDateTime startDate, ReservationStatus status);
 }

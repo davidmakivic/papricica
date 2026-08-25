@@ -101,4 +101,10 @@ public class EmailController {
         </html>
     """);
     }
+
+    public ResponseEntity<Void> verifyRedeemMealToken(@RequestParam String token) {
+        emailService.verifyRedeemMealToken(token);
+
+        return ResponseEntity.noContent().build();
+    }
 }

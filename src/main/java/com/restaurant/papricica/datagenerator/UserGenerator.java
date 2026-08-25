@@ -73,14 +73,15 @@ public class UserGenerator {
                     .passwordHash(passwordEncoder.encode("password"))
                     .firstName("David")
                     .lastName("Makivic")
-                    .phoneNumber("*4367763470895")
+                    .phoneNumber("+4367763470895")
                     .failedLoginAttempts(0)
                     .role(Roles.USER)
                     .status(UserStatus.UNLOCKED)
+                    .points(1000L)
                     .build();
 
             if (i == 1) {
-                user.setEmail("user@email.com");
+                user.setEmail("davidmakivic@gmail.com");
             }
 
 //            if (i % 2 == 0) {

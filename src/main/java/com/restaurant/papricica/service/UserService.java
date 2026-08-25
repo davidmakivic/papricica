@@ -3,6 +3,7 @@ package com.restaurant.papricica.service;
 import com.restaurant.papricica.dtos.*;
 import com.restaurant.papricica.entity.EmailVerificationToken;
 import com.restaurant.papricica.entity.ForgotPasswordToken;
+import com.restaurant.papricica.entity.MealRedemptionToken;
 import com.restaurant.papricica.entity.RefreshToken;
 import com.restaurant.papricica.entity.User;
 import com.restaurant.papricica.exceptions.EmailAlreadyExistsException;
@@ -46,8 +47,9 @@ public class UserService {
     private final EmailService emailService;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MealRedemptionTokenRepository mealRedemptionRepository;
 
-    public UserService(PasswordEncoder passwordEncoder, JwtTokenizer jwtTokenizer, UserRepository userRepository, UserMapper userMapper, ReservationRepository reservationService, TokenHasher tokenHasher, TokenGenerator tokenGenerator, EmailVerificationTokenRepository emailVerificationTokenRepository, EmailService emailService, ForgotPasswordTokenRepository forgotPasswordTokenRepository, RefreshTokenRepository refreshTokenRepository) {
+    public UserService(PasswordEncoder passwordEncoder, JwtTokenizer jwtTokenizer, UserRepository userRepository, UserMapper userMapper, ReservationRepository reservationService, TokenHasher tokenHasher, TokenGenerator tokenGenerator, EmailVerificationTokenRepository emailVerificationTokenRepository, EmailService emailService, ForgotPasswordTokenRepository forgotPasswordTokenRepository, RefreshTokenRepository refreshTokenRepository, MealRedemptionTokenRepository mealRedemptionRepository) {
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenizer = jwtTokenizer;
         this.userRepository = userRepository;
@@ -59,6 +61,7 @@ public class UserService {
         this.emailService = emailService;
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.mealRedemptionRepository = mealRedemptionRepository;
     }
 
     @Transactional
@@ -332,4 +335,31 @@ public class UserService {
     }
 
 
+    @Transactional
+    public void redeemMeal(String email) {
+        User user = userRepository.findUserByEmail(email);
+
+        if(user == null){
+            throw new RuntimeException("User does not exist");
+        }
+
+        if(user.getPoints() < 100){
+            throw new RuntimeException("User does not have enough points to redeem a meal");
+        }
+
+        String rawToken = tokenGenerator.generateToken();
+        String hashedToken = tokenHasher.hash(rawToken);
+
+        MealRedemptionToken token = MealRedemptionToken.builder()
+                .token(hashedToken)
+                .user(user)
+                .expiresAt(Instant.now().plus(Duration.ofDays(7)))
+                .build();
+
+        mealRedemptionRepository.save(token);
+
+        emailService.sendRedemptionEmail(email, rawToken);
+
+        token.getUser().setPoints(token.getUser().getPoints() - 100);
+    }
 }
