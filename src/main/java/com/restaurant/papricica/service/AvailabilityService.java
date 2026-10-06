@@ -34,6 +34,7 @@ public class AvailabilityService {
         List<TableAvailabilityDto> tables = tableRepository.findAll().stream()
                 .map(t -> new TableAvailabilityDto(
                         t.getId(),
+                        t.getPartySize(),
                         blockedTableIds.contains(t.getId()) ? TableStatus.RESERVED : TableStatus.AVAILABLE
                 ))
                 .toList();

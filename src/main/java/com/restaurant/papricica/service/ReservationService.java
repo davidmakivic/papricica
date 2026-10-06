@@ -117,11 +117,8 @@ public class ReservationService {
             throw new RuntimeException("User is not allowed to cancel this reservation");
         }
 
-        if(stored.getStartDate().isAfter(OffsetDateTime.now().plusHours(3))){
-            throw new RuntimeException("You can no longer cancel this reservation");
-        }
 
-        stored.setStatus(ReservationStatus.CANCELLED);
+        reservationRepository.delete(stored);
     }
 
     @Scheduled(timeUnit = TimeUnit.HOURS, fixedDelay = 2)
@@ -145,19 +142,28 @@ public class ReservationService {
         }
 
         User user = reservation.getUser();
-        user.setPoints(user.getPoints() + 100); //THIS CAN EVENTUALLY BE CHANGED TO THE DEIRED AMOUNT OF POINTS
+        user.setPoints(user.getPoints() + 100); //THIS CAN EVENTUALLY BE CHANGED TO THE DESIRED AMOUNT OF POINTS
 
         reservation.setPointsAwarded(true);
         reservation.setStatus(ReservationStatus.COMPLETED);
     }
 
     @Transactional
-    public void cancelReservation (ReservationDeleteRequest dto) {
-        Reservation reservation = reservationRepository.
-                findByTableIdAndStartDate(dto.tableId(), dto.startDate());
+    public void cancelReservation (ReservationDeleteRequest dto, String email) {
+        Reservation reservation = reservationRepository.findByTableIdAndStartDate(dto.tableId(), dto.startDate());
 
-        if (reservation == null) {
-            return;
+        if(reservation == null){
+            throw new RuntimeException("Reservation doesn't exist"); // CREATE SEPARATE EXCEPTION CALLED "RESERVATION_NON_EXISTENT"
+        }
+
+        if(!reservation.getUser().getEmail().equals(email) || reservation.getUser().getStatus() == UserStatus.LOCKED) {
+            throw new RuntimeException("User is not allowed to cancel this reservation");
+        }
+
+        if(reservation.getStartDate().isBefore(OffsetDateTime.now().plusHours(3))){
+            LOGGER.info("{}{}",reservation.getStartDate(), OffsetDateTime.now().plusHours(3));
+            LOGGER.debug("{}{}",reservation.getStartDate(), OffsetDateTime.now().plusHours(3));
+            throw new RuntimeException("You can no longer cancel this reservation");
         }
 
         reservation.setStatus(ReservationStatus.CANCELLED);

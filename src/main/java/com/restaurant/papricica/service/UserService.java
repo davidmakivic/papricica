@@ -119,7 +119,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDetailDto createUser(UserCreateDto dto) {
+    public void createUser(UserCreateDto dto) {
 
         String normalizedEmail = dto.email().trim().toLowerCase();
 
@@ -160,8 +160,6 @@ public class UserService {
                 + URLEncoder.encode(rawToken, StandardCharsets.UTF_8);
 
         emailService.sendVerificationEmail(newUser.getEmail(), confirmationUrl);
-
-        return userMapper.userToUserDetailDto(newUser);
     }
 
     @Transactional
@@ -336,14 +334,14 @@ public class UserService {
 
 
     @Transactional
-    public void redeemMeal(String email) {
+    public void redeemMeal(String email, int amount) {
         User user = userRepository.findUserByEmail(email);
 
         if(user == null){
             throw new RuntimeException("User does not exist");
         }
 
-        if(user.getPoints() < 100){
+        if(user.getPoints() < amount){
             throw new RuntimeException("User does not have enough points to redeem a meal");
         }
 
@@ -360,6 +358,15 @@ public class UserService {
 
         emailService.sendRedemptionEmail(email, rawToken);
 
-        token.getUser().setPoints(token.getUser().getPoints() - 100);
+        token.getUser().setPoints(token.getUser().getPoints() - amount);
+    }
+
+    public UserDetailDto me(String email){
+        User stored = userRepository.findUserByEmail(email);
+        if(stored == null) {
+            throw new RuntimeException("Gibts nicht");
+        }
+
+        return userMapper.userToUserDetailDto(stored);
     }
 }

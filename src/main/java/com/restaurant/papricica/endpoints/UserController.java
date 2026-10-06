@@ -26,6 +26,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Secured("ROLE_USER")
+    @GetMapping("/me")
+    public UserDetailDto me(Principal principal){
+        LOGGER.info("Getting data for user '{}'", principal.getName());
+        LOGGER.debug("Getting data for user '{}'", principal.getName());
+
+        return userService.me(principal.getName());
+    }
+
     @PermitAll
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody UserLoginDto userLoginDto) {
@@ -37,9 +46,10 @@ public class UserController {
     @PermitAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDetailDto createUser(@Valid @RequestBody UserCreateDto dto) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserCreateDto dto) {
         LOGGER.info("Creating a new user");
-        return userService.createUser(dto);
+        userService.createUser(dto);
+        return ResponseEntity.ok().build();
     }
 
     @Secured("ROLE_USER")
@@ -97,8 +107,8 @@ public class UserController {
 
     @Secured("ROLE_USER")
     @GetMapping("/redeem-meal")
-    public ResponseEntity<Void> redeemMeal (Principal principal){
-        userService.redeemMeal(principal.getName());
+    public ResponseEntity<Void> redeemMeal (Principal principal, @RequestParam Integer amount){
+        userService.redeemMeal(principal.getName(), amount);
         return ResponseEntity.ok().build();
     }
 }

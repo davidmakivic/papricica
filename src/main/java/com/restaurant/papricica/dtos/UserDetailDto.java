@@ -8,13 +8,11 @@ import java.time.OffsetDateTime;
 
 @Builder
 public record UserDetailDto(
-        Long userId,
         String email,
         String firstName,
         String lastName,
         String phoneNumber,
         Roles role,
-        UserStatus status,
-        OffsetDateTime createdAt
+        Long points
 ) {
 }

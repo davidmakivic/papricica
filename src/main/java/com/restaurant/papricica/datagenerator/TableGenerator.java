@@ -23,14 +23,12 @@ public class TableGenerator {
     }
 
     @PostConstruct
-    public void generateUsers() {
+    public void generateTables() {
 
         LOG.debug(
                 "Generating {} development users",
                 NUMBER_OF_TABLES_TO_GENERATE
         );
-
-        //createAdmin();
         createTables();
     }
 
@@ -59,6 +57,14 @@ public class TableGenerator {
 
     private void createTables() {
         for (int i = 1; i <= NUMBER_OF_TABLES_TO_GENERATE; i++) {
+
+            if(i == 1 || i == 4 || i == 6) {
+                tableRepository.save(Table.builder().partySize(2).build());
+           } else if (i == 2 || i == 5 || i == 7){
+                tableRepository.save(Table.builder().partySize(4).build());
+            } else {
+                tableRepository.save(Table.builder().partySize(6).build());
+            }
 
         }
     }

@@ -17,7 +17,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @jakarta.persistence.Table(name = "reservations",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"table_id", "start_date"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"table_id", "start_date", "status"}))
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

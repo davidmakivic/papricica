@@ -49,10 +49,12 @@ public class ReservationController {
         return ResponseEntity.ok(reservations);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_USER")
     @PatchMapping
-    public ResponseEntity<Void> cancelReservation(ReservationDeleteRequest dto){
-       reservationService.cancelReservation(dto);
+    public ResponseEntity<Void> cancelReservation(@RequestBody ReservationDeleteRequest dto, Principal principal){
+        LOGGER.info("reservation to be cancelled that arrived to the endpoint layer: {} {}", dto.tableId(), dto.startDate());
+        LOGGER.debug("reservation to be cancelled that arrived to the endpoint layer: {} {}", dto.tableId(), dto.startDate());
+       reservationService.cancelReservation(dto, principal.getName());
        return ResponseEntity.noContent().build();
     }
 }

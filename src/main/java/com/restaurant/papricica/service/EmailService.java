@@ -201,7 +201,9 @@ public class EmailService {
         }
 
         forgotPasswordToken.getUser().setPasswordHash(passwordEncoder.encode(password));
-        forgotPasswordTokenRepository.deleteById(forgotPasswordToken.getId());
+        forgotPasswordToken.getUser().setForgotPasswordToken(null);
+        forgotPasswordToken.setUser(null);
+
     }
 
     public void sendRedemptionEmail(String recipient, String rawToken) {
